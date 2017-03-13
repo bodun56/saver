@@ -24,29 +24,7 @@ private:
     QHBoxLayout *hblayout1;
     QHBoxLayout *hblayout2;
 
-    //getExistsDirectory alternative
-    void getDir(QString path, bool up);
-    QWidget *wid;
-    QVBoxLayout *vb;
-    QHBoxLayout *hb1;
-
-    QLabel *ldir;
-    QDir *dir;
-    QString currentPath;
-    QLabel *curdir;
-
-    //for config path and saves
-    QDir *configPath;
-    QFile *configFile;
-    QDir *savePath;
-    QFile *saveFile;
-    QString sconfig;
-    QString ssave;
-    const QString configName = "saverconfig";
-
-    /*new*/
     QString HomePath;
-    QDir *HPath;
     QString LastText;
     bool fWrite(QString path, QString tofile);
     QString fRead(QString path);

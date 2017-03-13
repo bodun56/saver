@@ -42,11 +42,6 @@ MainWindow::MainWindow(QWidget *parent)
     testbtn = new QPushButton("test");
     vblayout->addWidget(testbtn);
 
-    configFile = new QFile();
-    configPath = new QDir();
-    saveFile = new QFile();
-    savePath = new QDir();
-
     connect(testbtn, SIGNAL(clicked(bool)), this, SLOT(test()));
     connect(addCat, SIGNAL(clicked(bool)), this, SLOT(categoryAdd()));
     connect(catList, SIGNAL(currentIndexChanged(int)), this, SLOT(categoryChanche()));
@@ -67,10 +62,11 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    HPath = new QDir(HomePath);
+    QDir *HPath = new QDir(HomePath);
     if(!HPath->exists()){
         HPath->mkdir(HomePath);
     }
+    delete HPath;
 
     listDirs(HomePath);
     listFiles(HomePath);
@@ -78,10 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    if(configFile->isOpen())
-        configFile->close();
-    if(saveFile->isOpen())
-        saveFile->close();
+
 }
 
 //тестовая кнопка, переделается в "сохранить"
@@ -201,6 +194,7 @@ void MainWindow::textRemove(){
         saveList->removeItem(saveList->currentIndex());
     }
 }
+
 //выбор заметки
 void MainWindow::textListChanged(){
     QString path = HomePath;
@@ -224,6 +218,7 @@ void MainWindow::textListChanged(){
 
 }
 
+//список каталогов
 void MainWindow::listDirs(QString path){
     catList->clear();
     QDir dir;
