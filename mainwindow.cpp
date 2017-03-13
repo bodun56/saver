@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(catList, SIGNAL(currentIndexChanged(int)), this, SLOT(categoryChanche()));
     connect(delCat, SIGNAL(clicked(bool)), this, SLOT(categoryRemove()));
     connect(saveList, SIGNAL(currentIndexChanged(int)), this, SLOT(textListChanged()));
+    connect(del, SIGNAL(clicked(bool)), this, SLOT(textRemove()));
 
     HomePath = QDir::homePath();
     if(QApplication::platformName() == "android"){
@@ -103,6 +104,7 @@ void MainWindow::categoryAdd(){
     dir.mkdir(HomePath + "/" + str);
     catList->addItem(str);
 }
+
 //удаление категории
 void MainWindow::categoryRemove(){
     if(catList->currentIndex() == 0){
@@ -124,6 +126,7 @@ void MainWindow::categoryRemove(){
         catList->removeItem(catList->currentIndex());
     }
 }
+
 //выбор категории
 void MainWindow::categoryChanche() {
     if(catList->currentIndex() == 0){
@@ -132,6 +135,7 @@ void MainWindow::categoryChanche() {
         listFiles(HomePath + "/" + catList->currentText());
     }
 }
+
 //сохранение заметки
 void MainWindow::textSave(){
     QString path = HomePath;
@@ -171,9 +175,31 @@ void MainWindow::textSave(){
         }
     }
 }
+
 //удаление заметки
 void MainWindow::textRemove(){
+    if(saveList->currentIndex() == 0) return;
+    QMessageBox m;
+    m.setText("Удаляем " + saveList->currentText() + "?");
+    m.addButton(QMessageBox::Yes);
+    m.addButton(QMessageBox::No);
+    if(m.exec() == QMessageBox::No){
+        return;
+    }
 
+    QString path = HomePath;
+    if(catList->currentIndex() == 0){
+        path += "/";
+    }else{
+        path += "/" + catList->currentText() + "/";
+    }
+    path += saveList->currentText();
+
+    QFile file;
+    file.setFileName(path);
+    if(file.remove()){
+        saveList->removeItem(saveList->currentIndex());
+    }
 }
 //выбор заметки
 void MainWindow::textListChanged(){
