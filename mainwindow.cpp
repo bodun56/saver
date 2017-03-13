@@ -210,6 +210,7 @@ void MainWindow::listDirs(QString path){
     }
 }
 
+//список файлов/заметок
 void MainWindow::listFiles(QString path){
     saveList->clear();
     QDir dir;
