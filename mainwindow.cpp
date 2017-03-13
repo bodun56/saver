@@ -11,8 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     delCat = new QToolButton();
     delCat->setText("-");
 
-    save = new QToolButton();
-    save->setText("+");
+    //save = new QToolButton();
+    //save->setText("+");
 
     del = new QToolButton();
     del->setText("-");
@@ -32,23 +32,24 @@ MainWindow::MainWindow(QWidget *parent)
 
     hblayout2 = new QHBoxLayout();
     hblayout2->addWidget(saveList);
-    hblayout2->addWidget(save);
+    //hblayout2->addWidget(save);
     hblayout2->addWidget(del);
 
     vblayout->addLayout(hblayout1);
     vblayout->addLayout(hblayout2);
     vblayout->addWidget(text);
 
-    testbtn = new QPushButton("test");
+    testbtn = new QPushButton("Сохранить");
     vblayout->addWidget(testbtn);
 
-    connect(testbtn, SIGNAL(clicked(bool)), this, SLOT(test()));
+    //connect(testbtn, SIGNAL(clicked(bool)), this, SLOT(test()));
+    connect(testbtn, SIGNAL(clicked(bool)), this, SLOT(textSave()));
     connect(addCat, SIGNAL(clicked(bool)), this, SLOT(categoryAdd()));
     connect(catList, SIGNAL(currentIndexChanged(int)), this, SLOT(categoryChanche()));
     connect(delCat, SIGNAL(clicked(bool)), this, SLOT(categoryRemove()));
     connect(saveList, SIGNAL(currentIndexChanged(int)), this, SLOT(textListChanged()));
     connect(del, SIGNAL(clicked(bool)), this, SLOT(textRemove()));
-    connect(save, SIGNAL(clicked(bool)), this, SLOT(textSave()));
+    //connect(save, SIGNAL(clicked(bool)), this, SLOT(textSave()));
 
     HomePath = QDir::homePath();
     if(QApplication::platformName() == "android"){
@@ -80,10 +81,7 @@ MainWindow::~MainWindow()
 
 //тестовая кнопка, переделается в "сохранить"
 void MainWindow::test(){
-    QString info;
-    info = HomePath + "\r\n";
-    info += QApplication::platformName() + "\r\n";
-    text->setPlainText(info);
+    fWrite(HomePath + "/testfile", "test text");
 }
 
 //добавление категории
@@ -135,7 +133,6 @@ void MainWindow::textSave(){
     QString path = HomePath;
     QString filename = "";
     bool newsave;
-
     if(catList->currentIndex() == 0){
         //если категория корневая
         path += "/";
@@ -152,24 +149,15 @@ void MainWindow::textSave(){
     }else{
         //есть выбранная заметка, пишем в неё
         filename = saveList->currentText();
-        path += filename;
         newsave = false;
     }
 
-    //собственно сама запись в файл
-    QFile fwrite;
-    fwrite.setFileName(path + filename);
-    if(fwrite.open(QIODevice::WriteOnly | QIODevice::Text)){
-        QTextStream ts(&fwrite);
-        ts.setCodec("UTF-8");
-        ts << text->toPlainText();
-        fwrite.close();
-        if(newsave){
-            saveList->addItem(filename);
-        }
+    path += filename;
+    if(fWrite(path, text->toPlainText())){
+        if(newsave) saveList->addItem(filename);
     }
 
-    text->setPlainText("");
+    text->clear();
 }
 
 //удаление заметки
@@ -266,7 +254,6 @@ bool MainWindow::fWrite(QString path, QString tofile){
         f.close();
         return true;
     }
-
     return false;
 }
 
