@@ -17,7 +17,6 @@ private:
     QToolButton *addCat;
     QToolButton *delCat;
     QComboBox *saveList;
-    //QToolButton *save;
     QToolButton *del;
     QPlainTextEdit *text;
     QPushButton *testbtn;

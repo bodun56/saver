@@ -11,9 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
     delCat = new QToolButton();
     delCat->setText("-");
 
-    //save = new QToolButton();
-    //save->setText("+");
-
     del = new QToolButton();
     del->setText("-");
 
@@ -32,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     hblayout2 = new QHBoxLayout();
     hblayout2->addWidget(saveList);
-    //hblayout2->addWidget(save);
     hblayout2->addWidget(del);
 
     vblayout->addLayout(hblayout1);
@@ -42,14 +38,12 @@ MainWindow::MainWindow(QWidget *parent)
     testbtn = new QPushButton("Сохранить");
     vblayout->addWidget(testbtn);
 
-    //connect(testbtn, SIGNAL(clicked(bool)), this, SLOT(test()));
     connect(testbtn, SIGNAL(clicked(bool)), this, SLOT(textSave()));
     connect(addCat, SIGNAL(clicked(bool)), this, SLOT(categoryAdd()));
     connect(catList, SIGNAL(currentIndexChanged(int)), this, SLOT(categoryChanche()));
     connect(delCat, SIGNAL(clicked(bool)), this, SLOT(categoryRemove()));
     connect(saveList, SIGNAL(currentIndexChanged(int)), this, SLOT(textListChanged()));
     connect(del, SIGNAL(clicked(bool)), this, SLOT(textRemove()));
-    //connect(save, SIGNAL(clicked(bool)), this, SLOT(textSave()));
 
     HomePath = QDir::homePath();
     if(QApplication::platformName() == "android"){
@@ -79,20 +73,19 @@ MainWindow::~MainWindow()
 
 }
 
-//тестовая кнопка, переделается в "сохранить"
+
 void MainWindow::test(){
     fWrite(HomePath + "/testfile", "test text");
 }
 
 //добавление категории
 void MainWindow::categoryAdd(){
-    QString str = QInputDialog::getText(0, "Input", "Name",
+    QString str = QInputDialog::getText(0, "Добавление категории", "Название категории",
                                         QLineEdit::Normal);
     if(str == "") {
         return;
     }
     QDir dir;
-    //dir.setPath(HomePath + "/" + str);
     dir.mkdir(HomePath + "/" + str);
     catList->addItem(str);
 }
@@ -207,7 +200,6 @@ void MainWindow::textListChanged(){
         m.addButton(QMessageBox::Yes);
         m.addButton(QMessageBox::No);
         if(m.exec() == QMessageBox::Yes){
-            //похуй на старую, открываем новую
             text->setPlainText(fRead(path));
         }else{
             return;
@@ -261,7 +253,6 @@ bool MainWindow::fWrite(QString path, QString tofile){
 QString MainWindow::fRead(QString path){
     QFile f(path);
     if(!f.open(QIODevice::ReadOnly|QIODevice::Text)){
-        //not open
         return "";
     }
 
