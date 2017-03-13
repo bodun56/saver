@@ -70,7 +70,16 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-
+    delete catList;
+    delete addCat;
+    delete delCat;
+    delete saveList;
+    delete del;
+    delete text;
+    delete testbtn;
+    delete hblayout1;
+    delete hblayout2;
+    delete vblayout;
 }
 
 
