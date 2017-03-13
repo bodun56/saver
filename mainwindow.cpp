@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(delCat, SIGNAL(clicked(bool)), this, SLOT(categoryRemove()));
     connect(saveList, SIGNAL(currentIndexChanged(int)), this, SLOT(textListChanged()));
     connect(del, SIGNAL(clicked(bool)), this, SLOT(textRemove()));
+    connect(save, SIGNAL(clicked(bool)), this, SLOT(textSave()));
 
     HomePath = QDir::homePath();
     if(QApplication::platformName() == "android"){
@@ -167,6 +168,8 @@ void MainWindow::textSave(){
             saveList->addItem(filename);
         }
     }
+
+    text->setPlainText("");
 }
 
 //удаление заметки
@@ -205,15 +208,24 @@ void MainWindow::textListChanged(){
     }
     if(saveList->currentIndex() > 0){
         path += saveList->currentText();
-        text->setPlainText(path);
     }else{
         return;
     }
 
     if(text->toPlainText().count() > 0){
         //нужно ли сохранить
+        QMessageBox m;
+        m.setText("Есть несохранённая заметка, открыть новую?");
+        m.addButton(QMessageBox::Yes);
+        m.addButton(QMessageBox::No);
+        if(m.exec() == QMessageBox::Yes){
+            //похуй на старую, открываем новую
+            text->setPlainText(fRead(path));
+        }else{
+            return;
+        }
     }else{
-
+        text->setPlainText(fRead(path));
     }
 
 }
