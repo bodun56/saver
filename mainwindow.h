@@ -34,7 +34,6 @@ public:
     QVBoxLayout *vblayout;
 
 public slots:
-    void test();
     void categoryAdd();
     void categoryRemove();
     void categoryChanche();
