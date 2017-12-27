@@ -82,11 +82,6 @@ MainWindow::~MainWindow()
     delete vblayout;
 }
 
-
-void MainWindow::test(){
-    fWrite(HomePath + "/testfile", "test text");
-}
-
 //добавление категории
 void MainWindow::categoryAdd(){
     QString str = QInputDialog::getText(0, "Добавление категории", "Название категории",
