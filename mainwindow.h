@@ -28,6 +28,7 @@ private:
     bool fWrite(QString path, QString tofile);
     QString fRead(QString path);
     void msg(QString text, QString title);
+    const QString title = "Saver";
 
 public:
 
@@ -42,7 +43,7 @@ public slots:
     void textListChanged();
     void listDirs(QString path);
     void listFiles(QString path);
-
+	void editText();
 };
 
 #endif // MAINWINDOW_H

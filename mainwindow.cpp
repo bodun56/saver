@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     testbtn = new QPushButton("Сохранить");
     vblayout->addWidget(testbtn);
+    
+    this->setWindowIcon(QIcon("/usr/share/pixmaps/saver.png"));
 
     connect(testbtn, SIGNAL(clicked(bool)), this, SLOT(textSave()));
     connect(addCat, SIGNAL(clicked(bool)), this, SLOT(categoryAdd()));
@@ -44,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(delCat, SIGNAL(clicked(bool)), this, SLOT(categoryRemove()));
     connect(saveList, SIGNAL(currentIndexChanged(int)), this, SLOT(textListChanged()));
     connect(del, SIGNAL(clicked(bool)), this, SLOT(textRemove()));
+    connect(text, SIGNAL(textChanged()), this, SLOT(editText()));
 
     HomePath = QDir::homePath();
     if(QApplication::platformName() == "android"){
@@ -238,6 +241,11 @@ void MainWindow::listFiles(QString path){
         if(item != "." && item != "..")
             saveList->addItem(item);
     }
+}
+
+void MainWindow::editText()
+{
+    this->setWindowTitle(title + " (изменено)");
 }
 
 //запись
